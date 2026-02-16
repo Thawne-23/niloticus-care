@@ -1,35 +1,45 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Platform, StatusBar } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Platform, StatusBar, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { useAuth } from '../../contexts/AuthContext';
+import { getLanguage, t } from '../../utils/i18n';
 
 export default function EditProfileScreen() {
-  const { currentUser } = useAuth();
   const navigation = useNavigation();
+
+  const [lang, setLang] = useState('en');
+
+  const loadLanguage = useCallback(async () => {
+    const current = await getLanguage();
+    setLang(current);
+  }, []);
+
+  useEffect(() => {
+    loadLanguage();
+    const unsubscribe = navigation.addListener('focus', loadLanguage);
+    return unsubscribe;
+  }, [loadLanguage, navigation]);
+  
+  const handleSave = () => {
+    Alert.alert(
+      t(lang, 'edit_profile_title'),
+      t(lang, 'edit_profile_unavailable'),
+      [{ text: t(lang, 'alert_ok') }]
+    );
+  };
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={22} color="#1C1C1E" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Edit Profile</Text>
-        <View style={{ width: 40 }} />
-      </View>
 
       <View style={styles.content}>
         <View style={styles.card}>
-          <Text style={styles.label}>Username</Text>
-          <Text style={styles.value}>{currentUser?.username || '(not set)'}</Text>
-
-          <Text style={styles.label}>Email</Text>
-          <Text style={styles.value}>{currentUser?.email || '(not set)'}</Text>
-
           <Text style={styles.note}>
-            This is a placeholder. We can add inputs here to update your profile and
-            persist changes to SQLite.
+            {t(lang, 'edit_profile_unavailable')}
           </Text>
+          
+          <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+            <Text style={styles.saveButtonText}>{t(lang, 'alert_ok')}</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -64,14 +74,30 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#1C1C1E',
   },
-  content: {
-    padding: 20,
+  note: {
+    fontSize: 14,
+    color: '#8E8E93',
+    marginTop: 20,
+    marginBottom: 20,
+    lineHeight: 20,
+    textAlign: 'center',
+  },
+  saveButton: {
+    backgroundColor: '#007AFF',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  saveButtonText: {
+    color: 'white',
+    fontWeight: '600',
+    fontSize: 16,
   },
   card: {
     backgroundColor: '#FFFFFF',
     borderRadius: 12,
     padding: 16,
-    shadowColor: '#000',
     shadowOpacity: 0.06,
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 2 },

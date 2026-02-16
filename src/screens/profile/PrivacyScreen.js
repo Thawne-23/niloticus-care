@@ -1,28 +1,32 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Platform, StatusBar } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { getLanguage, t } from '../../utils/i18n';
 
 export default function PrivacyScreen() {
   const navigation = useNavigation();
+  const [lang, setLang] = useState('en');
+
+  const loadLanguage = useCallback(async () => {
+    const current = await getLanguage();
+    setLang(current);
+  }, []);
+
+  useEffect(() => {
+    loadLanguage();
+    const unsubscribe = navigation.addListener('focus', loadLanguage);
+    return unsubscribe;
+  }, [loadLanguage, navigation]);
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={22} color="#1C1C1E" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Privacy & Security</Text>
-        <View style={{ width: 40 }} />
-      </View>
 
       <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
         <View style={styles.card}>
-          <Text style={styles.title}>Your Privacy</Text>
+          <Text style={styles.title}>{t(lang, 'privacy_title')}</Text>
           <Text style={styles.paragraph}>
-            We value your privacy. This is a placeholder screen where you can describe how
-            user data is handled, stored, and protected. You can also provide toggles for
-            notification preferences, analytics opt-in, and more.
+            {t(lang, 'privacy_body')}
           </Text>
         </View>
 

@@ -3,99 +3,134 @@ import 'react-native-reanimated';
 import 'react-native-get-random-values';
 import 'react-native-gesture-handler';
 
-// TensorFlow.js imports (enabled for dev client smoke test)
-import '@tensorflow/tfjs-react-native';
-import * as tf from '@tensorflow/tfjs';
+// Initialize detection model
+import { initializeDetectionModel } from './src/yoloDetector';
+import { initDatabase } from './src/utils/database';
 
-// Minimal TFJS smoke test
-(async () => {
-  try {
-    await tf.ready();
-    // rn-webgl is typically best on RN; fall back to cpu if needed
-    try {
-      await tf.setBackend('rn-webgl');
-    } catch {}
-    console.log('TFJS ready. Backend:', tf.getBackend());
-    // Simple op to verify execution path
-    const a = tf.tensor([1, 2, 3]);
-    const b = tf.tensor([4, 5, 6]);
-    const c = a.add(b);
-    console.log('TF add sample:', await c.data());
-    a.dispose(); b.dispose(); c.dispose();
-  } catch (error) {
-    console.warn('Error initializing TensorFlow.js:', error);
-  }
-})();
+// Run mock TF initialization and smoke test will be executed from App component
 
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, ActivityIndicator, Text } from 'react-native';
-import { AuthProvider, useAuth } from './src/contexts/AuthContext';
+import { StyleSheet, View, ActivityIndicator, Text, Platform } from 'react-native';
 
 // Import screens
-import SignInScreen from './src/screens/auth/SignInScreen';
-import SignUpScreen from './src/screens/auth/SignUpScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import EditProfileScreen from './src/screens/profile/EditProfileScreen';
 import PrivacyScreen from './src/screens/profile/PrivacyScreen';
+import AboutScreen from './src/screens/profile/AboutScreen';
+import LanguageScreen from './src/screens/profile/LanguageScreen';
+import DetailsHistory from './src/screens/DetailsHistory';
 
 const Stack = createNativeStackNavigator();
 
-function AuthStack() {
-  console.log('Rendering AuthStack');
+function AppNavigator() {
+  console.log('Rendering AppNavigator');
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="SignIn" component={SignInScreen} />
-      <Stack.Screen name="SignUp" component={SignUpScreen} />
-    </Stack.Navigator>
-  );
-}
-
-function AppStack() {
-  console.log('Rendering AppStack');
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="EditProfile" component={EditProfileScreen} />
-      <Stack.Screen name="Privacy" component={PrivacyScreen} />
-    </Stack.Navigator>
-  );
-}
-
-function RootNavigator() {
-  const { isAuthenticated, isLoading } = useAuth();
-  console.log('RootNavigator', { isAuthenticated, isLoading });
-
-  if (isLoading) {
-    return (
-      <View style={styles.container}>
-        <Text>Loading...</Text>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
-
-  return (
-    <View style={styles.container}>
-      <StatusBar style="auto" />
-      {isAuthenticated ? <AppStack /> : <AuthStack />}
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator 
+        screenOptions={{ 
+          headerStyle: {
+            backgroundColor: '#f5f5f5',
+          },
+          headerTintColor: '#000',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      >
+        <Stack.Screen 
+          name="Home" 
+          component={HomeScreen} 
+          options={{
+            title: 'Home',
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen 
+          name="DetailsHistory" 
+          component={DetailsHistory} 
+          options={{ 
+            title: 'Scan Details',
+            headerBackTitle: 'Back'
+          }} 
+        />
+        <Stack.Screen 
+          name="EditProfile" 
+          component={EditProfileScreen} 
+          options={{ 
+            title: 'Edit Profile',
+            headerBackTitle: 'Back'
+          }} 
+        />
+        <Stack.Screen 
+          name="Privacy" 
+          component={PrivacyScreen} 
+          options={{ 
+            title: 'Privacy Policy',
+            headerBackTitle: 'Back'
+          }} 
+        />
+        <Stack.Screen 
+          name="About" 
+          component={AboutScreen} 
+          options={{ 
+            title: 'About',
+            headerBackTitle: 'Back'
+          }} 
+        />
+        <Stack.Screen 
+          name="Language" 
+          component={LanguageScreen} 
+          options={{ 
+            title: 'Language',
+            headerBackTitle: 'Back'
+          }} 
+        />
+      </Stack.Navigator>
+      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
+    </NavigationContainer>
   );
 }
 
 export default function App() {
-  console.log('Rendering App');
+  const [tfStatus, setTfStatus] = React.useState({ loading: true });
+
+  React.useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        // Initialize database first
+        console.log('[App.js] Initializing database...');
+        await initDatabase();
+        console.log('[App.js] Database initialized.');
+
+        console.log('[App.js] Initializing YOLO detection model...');
+        await initializeDetectionModel();
+        console.log('[App.js] YOLO detection model initialized.');
+        if (mounted) setTfStatus({ loading: false, ok: true });
+      } catch (error) {
+        if (mounted) setTfStatus({ loading: false, ok: false, details: String(error) });
+        console.warn('Error initializing app services:', error);
+      }
+    })();
+    return () => { mounted = false; };
+  }, []);
+
   return (
-    <AuthProvider>
-      <NavigationContainer>
-        <RootNavigator />
-      </NavigationContainer>
-    </AuthProvider>
+    <View style={{ flex: 1 }}>
+      <AppNavigator />
+      {/* Small debug banner shown on top when dev build is active */}
+      {/* {tfStatus && !tfStatus.loading && (
+        <View style={{ position: 'absolute', left: 8, right: 8, bottom: 16, padding: 8, backgroundColor: tfStatus.ok ? 'rgba(0,128,0,0.85)' : 'rgba(200,0,0,0.9)', borderRadius: 8 }}>
+          <Text style={{ color: '#fff', fontWeight: '600' }}>{tfStatus.ok ? 'TF OK' : 'TF ERROR'}</Text>
+          <Text style={{ color: '#fff', fontSize: 12 }}>{tfStatus.details}</Text>
+        </View>
+      )} */}
+    </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

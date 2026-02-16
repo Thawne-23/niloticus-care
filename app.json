@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "niloticus-carev2",
+    "name": "NiloticusCare",
     "slug": "niloticus-carev2",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -27,8 +27,14 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
+      "expo-sqlite",
       "expo-secure-store",
-      "expo-sqlite"
+      [
+        "expo-asset",
+        {
+          "assets": ["./assets/best_float16.tflite"] 
+        }
+      ]
     ],
     "assetBundlePatterns": [
       "**/*"
