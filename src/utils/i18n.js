@@ -122,9 +122,9 @@ const DICT = {
     edit_profile_unavailable: 'Profile editing is not available in offline mode.',
 
     about_title: 'About',
-    about_tagline: 'Offline fish disease detection and scan history.',
+    about_tagline: 'Offline tilapia disease detection and scan history.',
     about_what_it_does: 'What it does',
-    about_what_it_does_text: 'Niloticus Care helps you scan fish images and identify possible diseases. Results can be saved to your scan history for future reference.',
+    about_what_it_does_text: 'Niloticus Care helps you scan tilapia images and identify possible diseases. Results can be saved to your scan history for future reference.',
     about_feature_scan: 'Image scan with bounding boxes',
     about_feature_history: 'Local scan history with archive/unarchive',
     about_feature_offline: 'Works offline (data stays on your device)',
@@ -302,7 +302,7 @@ const CARE_TIPS = {
   en: {
     'Bacterial Aeromonas Disease': [
       'Improve water quality; reduce organic load',
-      'Isolate affected fish to prevent spread',
+      'Isolate affected tilapia to prevent spread',
       'Consult a vet for appropriate antibiotics',
     ],
     'Healthy-Fish': [
@@ -311,7 +311,7 @@ const CARE_TIPS = {
       'Keep ammonia and nitrite at 0 ppm',
     ],
     Streptococcus: [
-      'Quarantine affected fish immediately',
+      'Quarantine affected tilapia immediately',
       'Increase aeration; reduce stocking density',
       'Seek guidance for vaccine or treatment protocols',
     ],
@@ -324,7 +324,7 @@ const CARE_TIPS = {
   tl: {
     'Bacterial Aeromonas Disease': [
       'Pagbutihin ang kalidad ng tubig; bawasan ang dumi/organic load',
-      'Ihiwalay ang apektadong isda para hindi kumalat',
+      'Ihiwalay ang apektadong tilapia para hindi kumalat',
       'Kumonsulta sa beterinaryo para sa tamang antibiotic',
     ],
     'Healthy-Fish': [
