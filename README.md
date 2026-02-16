@@ -143,6 +143,15 @@ We welcome contributions! Please follow these steps:
 - **thawne-23** - Project Owner
 
 
+## Model Request
+
+**Important**: The TensorFlow Lite model (`best_float16.tflite`) used for disease detection is not included in this repository due.
+
+To request a copy of the TFLite model, please contact:
+- **Email**: llarenasleo5@gmail.com
+
+Please include your name, organization (if applicable), and a brief description of your intended use case when requesting the model.
+
 ## Support
 
 For support and questions, please open an issue in the GitHub repository or contact the development team.
