@@ -78,15 +78,84 @@ export default function AboutScreen() {
         </View> */}
 
         <View style={styles.card}>
-          <Text style={styles.sectionTitle}>{t(lang, 'about_developer')}</Text>
-          <View style={styles.kvRow}>
-            <Text style={styles.kvLabel}>{t(lang, 'about_name')}</Text>
-            <Text style={styles.kvValue}>{DEVELOPER_NAME}</Text>
+          <Text style={styles.sectionTitle}>Development Team</Text>
+          
+          <View style={styles.teamMember}>
+            <View style={styles.memberInfo}>
+              <View>
+                <Text style={styles.memberName}>JOCELYN I. ANCHETA, DIT(c)</Text>
+                <Text style={styles.memberEmail}>jancheta@dmmmsu.edu.ph</Text>
+              </View>
+              <View style={[styles.badge, styles.adviserBadge]}>
+                <Text style={styles.badgeText}>Adviser</Text>
+              </View>
+            </View>
           </View>
-          <View style={styles.kvRow}>
+
+          <View style={styles.teamMember}>
+            <View style={styles.memberInfo}>
+              <View>
+                <Text style={styles.memberName}>LEO G. LLARENAS</Text>
+                <Text style={styles.memberEmail}>lllarenas0993@student.dmmmsu.edu.ph</Text>
+              </View>
+              <View style={[styles.badge, styles.leaderBadge]}>
+                <Text style={styles.badgeText}>Leader</Text>
+              </View>
+            </View>
+          </View>
+
+          <View style={styles.teamMember}>
+            <View style={styles.memberInfo}>
+              <View>
+                <Text style={styles.memberName}>JUSTEL H. DACANAY</Text>
+                <Text style={styles.memberEmail}>jdacanay0223@student.dmmmsu.edu.ph</Text>
+              </View>
+              <View style={[styles.badge, styles.memberBadge]}>
+                <Text style={styles.badgeText}>Member</Text>
+              </View>
+            </View>
+          </View>
+
+          <View style={styles.teamMember}>
+            <View style={styles.memberInfo}>
+              <View>
+                <Text style={styles.memberName}>AR GIE D. LAPITAN</Text>
+                <Text style={styles.memberEmail}>aglapitan9063@student.dmmmsu.edu.ph</Text>
+              </View>
+              <View style={[styles.badge, styles.memberBadge]}>
+                <Text style={styles.badgeText}>Member</Text>
+              </View>
+            </View>
+          </View>
+
+          <View style={styles.teamMember}>
+            <View style={styles.memberInfo}>
+              <View>
+                <Text style={styles.memberName}>CRYSTAL ANNE B. MILO</Text>
+                <Text style={styles.memberEmail}>cabmilo9913@student.dmmmsu.edu.ph</Text>
+              </View>
+              <View style={[styles.badge, styles.memberBadge]}>
+                <Text style={styles.badgeText}>Member</Text>
+              </View>
+            </View>
+          </View>
+
+          <View style={styles.teamMember}>
+            <View style={styles.memberInfo}>
+              <View>
+                <Text style={styles.memberName}>RHONAMAE H. VALDEZ</Text>
+                <Text style={styles.memberEmail}>rvaldez8553@student.dmmmsu.edu.ph</Text>
+              </View>
+              <View style={[styles.badge, styles.memberBadge]}>
+                <Text style={styles.badgeText}>Member</Text>
+              </View>
+            </View>
+          </View>
+
+          {/* <View style={[styles.kvRow, {marginTop: 16}]}>
             <Text style={styles.kvLabel}>{t(lang, 'about_support')}</Text>
             <Text style={styles.kvValue}>{SUPPORT_EMAIL}</Text>
-          </View>
+          </View> */}
 
           {/* <TouchableOpacity style={styles.primaryBtn} onPress={onEmail}>
             <Ionicons name="mail-outline" size={18} color="#FFFFFF" />
@@ -144,6 +213,49 @@ const styles = StyleSheet.create({
   kvRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 8 },
   kvLabel: { color: '#8E8E93', fontSize: 13 },
   kvValue: { color: '#1C1C1E', fontSize: 13, fontWeight: '700' },
+  teamMember: {
+    marginTop: 12,
+    paddingBottom: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F2F2F7',
+  },
+  memberInfo: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  memberName: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#1C1C1E',
+    flex: 1,
+  },
+  memberEmail: {
+    fontSize: 12,
+    color: '#8E8E93',
+    marginTop: 2,
+  },
+  badge: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+    minWidth: 60,
+    alignItems: 'center',
+  },
+  badgeText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#FFFFFF',
+  },
+  leaderBadge: {
+    backgroundColor: '#007AFF',
+  },
+  adviserBadge: {
+    backgroundColor: '#34C759',
+  },
+  memberBadge: {
+    backgroundColor: '#8E8E93',
+  },
   primaryBtn: {
     marginTop: 14,
     backgroundColor: '#007AFF',
