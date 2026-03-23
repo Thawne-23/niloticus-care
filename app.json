@@ -26,18 +26,12 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
+        "plugins": [
       "expo-sqlite",
-      "expo-secure-store",
-      [
-        "expo-asset",
-        {
-          "assets": ["./assets/best_float16.tflite"] 
-        }
-      ]
+      "expo-secure-store"
     ],
     "assetBundlePatterns": [
-      "**/*"
+      "assets/**/*"
     ],
     "extra": {
       "eas": {
