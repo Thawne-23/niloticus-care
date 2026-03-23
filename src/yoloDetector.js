@@ -8,7 +8,7 @@ import { loadTensorflowModel } from 'react-native-fast-tflite';
 // --- Configuration ---
 const MODEL_NAME = 'best_float16.tflite';
 const MODEL_INPUT_SIZE = 640; // YOLOv8 standard input size
-const CONFIDENCE_THRESHOLD = 0.15; // Filter detections below this confidence
+const CONFIDENCE_THRESHOLD = 0.25; // Filter detections below this confidence
 
 // Class labels for Tilapia disease detection 
 const CLASS_LABELS = [
